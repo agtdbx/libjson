@@ -14,9 +14,16 @@ public:
 
 	JsonContent	&getContent(std::string &key);
 
-	void	setContent(std::string &key, JsonContent &content);
+	void	setContent(std::string key, JsonContent content);
 
 	Json	&operator=(Json const &json);
+	JsonContent	&operator[](int key);
+	JsonContent	&operator[](bool key);
+	JsonContent	&operator[](char key);
+	JsonContent	&operator[](float key);
+	JsonContent	&operator[](double key);
+	JsonContent	&operator[](char const *key);
+	JsonContent	&operator[](std::string key);
 
 	class JsonKeyError : public std::exception
 	{
@@ -27,8 +34,12 @@ public:
 		}
 	};
 
+	std::string	toString(void);
+
 private:
 	std::map<std::string, JsonContent>	data;
 };
+
+std::ostream	&operator<<(std::ostream &os, Json &json);
 
 #endif

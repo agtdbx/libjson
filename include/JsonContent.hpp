@@ -36,6 +36,7 @@ public:
 	JsonContent(float const &content);
 	JsonContent(double const &content);
 	JsonContent(Json const &content);
+	JsonContent(char const *str);
 	JsonContent(std::string const &content);
 	JsonContent(std::vector<int> const &content);
 	JsonContent(std::vector<bool> const &content);
@@ -78,6 +79,21 @@ public:
 	void	setContent(std::vector<Json> const &content);
 	void	setContent(std::vector<std::string> const &content);
 
+	JsonContent	&operator=(int const &content);
+	JsonContent	&operator=(bool const &content);
+	JsonContent	&operator=(char const &content);
+	JsonContent	&operator=(float const &content);
+	JsonContent	&operator=(double const &content);
+	JsonContent	&operator=(Json const &content);
+	JsonContent	&operator=(char const *content);
+	JsonContent	&operator=(std::string const &content);
+	JsonContent	&operator=(std::vector<int> const &content);
+	JsonContent	&operator=(std::vector<bool> const &content);
+	JsonContent	&operator=(std::vector<char> const &content);
+	JsonContent	&operator=(std::vector<float> const &content);
+	JsonContent	&operator=(std::vector<double> const &content);
+	JsonContent	&operator=(std::vector<Json> const &content);
+	JsonContent	&operator=(std::vector<std::string> const &content);
 	JsonContent	&operator=(JsonContent const &jsonContent);
 
 	class JsonContentTypeError : public std::exception
@@ -89,11 +105,15 @@ public:
 		}
 	};
 
+	std::string	toString(void);
+
 private:
 	jsonType	type;
 	void		*content;
 
 	void	clearContent(void);
 };
+
+std::ostream	&operator<<(std::ostream &os, JsonContent &jsonContent);
 
 #endif

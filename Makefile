@@ -136,7 +136,12 @@ re: fclean
 
 run: $(BIN_DIR)/$(NAME)
 	@echo "$(BLUE)Launch game$(NOC)"
-	$(shell cd $(BIN_DIR); ./$(NAME))
+	@cd $(BIN_DIR); ./$(NAME)
+	@echo "$(GREEN)Have a nice day :)$(NOC)"
+
+runval: $(BIN_DIR)/$(NAME)
+	@echo "$(BLUE)Launch game$(NOC)"
+	@cd $(BIN_DIR); valgrind ./$(NAME)
 	@echo "$(GREEN)Have a nice day :)$(NOC)"
 
 build-linux:
@@ -168,6 +173,6 @@ create_script:
 	@gcc .progress_bar.c -o .progress_bar
 	@rm -rf .progress_bar.c
 
-.PHONY: all clean fclean re run build-linux build-windows create_script
+.PHONY: all clean fclean re run runval build-linux build-windows create_script
 
 -include $(DEPS)
