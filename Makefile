@@ -25,7 +25,8 @@ BUILD_DIR	:=	.build
 BIN_DIR		:=	bin
 
 #=================================SOURCE FILES=================================#
-SRCS	:=	$(SOURCE_DIR)/main.cpp
+SRCS	:=	$(SOURCE_DIR)/main.cpp \
+			$(SOURCE_DIR)/jsonContent/jsonContent.cpp
 
 #====================================OBJECTS===================================#
 OBJS	:=	${SRCS:$(SOURCE_DIR)/%.cpp=$(BUILD_DIR)/%.o}
@@ -141,31 +142,12 @@ build-linux:
 	@echo "$(BLUE)Create a build for linux$(NOC)"
 	@rm -rf build_linux
 	@mkdir build_linux
-	@mkdir build_linux/bin
-	@echo "./bin/$(NAME)" > build_linux/run_game.sh
-	@chmod 744 build_linux/run_game.sh
-	@echo "$(PURPLE)Compiling...$(NOC)"
-	@$(CC) $(CFLAGS) -o build_linux/bin/$(NAME) $(INCLUDE) $(SRCS) $(SDL_FLAGS)
-	@cp -r data build_linux/data
 	@echo "$(GREEN)Done$(NOC)"
 
 build-windows:
 	@echo "$(BLUE)Create a build for windows$(NOC)"
 	@rm -rf build_windows
 	@mkdir build_windows
-	@mkdir build_windows/bin
-	@echo "@echo off" > build_windows/run_game.bat
-	@echo "title Run game" >> build_windows/run_game.bat
-	@echo "cd bin" >> build_windows/run_game.bat
-	@echo "$(NAME).exe" >> build_windows/run_game.bat
-	@echo "$(PURPLE)Compiling...$(NOC)"
-	@x86_64-w64-mingw32-g++ $(CFLAGS) -o build_windows/bin/$(NAME).exe \
-		$(INCLUDE) $(SRCS) -lmingw32 $(SDL_FLAGS_WINDOWS)
-	@cp -r data build_windows/data
-	@cp SDL2/bin/SDL2.dll build_windows/bin/SDL2.dll
-	@cp SDL2/bin/SDL2_image.dll build_windows/bin/SDL2_image.dll
-	@cp SDL2/bin/SDL2_mixer.dll build_windows/bin/SDL2_mixer.dll
-	@cp SDL2/bin/SDL2_ttf.dll build_windows/bin/SDL2_ttf.dll
 	@echo "$(GREEN)Done$(NOC)"
 
 create_script:
