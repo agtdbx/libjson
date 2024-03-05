@@ -9,9 +9,9 @@ Json::Json( void )
 }
 
 
-Json::Json(const Json &obj)
+Json::Json(const Json &json)
 {
-
+	this->data = json.data;
 }
 
 
@@ -22,8 +22,30 @@ Json::~Json( void )
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Getters and setters
+// Getters
 ////////////////////////////////////////////////////////////////////////////////
+JsonContent	&Json::getContent(std::string &key)
+{
+	JsonContent	*content = NULL;
+	try
+	{
+		content = &this->data.at(key);
+	}
+	catch (std::exception e)
+	{
+		throw JsonKeyError();
+	}
+	return (*content);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Setters
+////////////////////////////////////////////////////////////////////////////////
+void	Json::setContent(std::string &key, JsonContent &content)
+{
+
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -33,6 +55,8 @@ Json	&Json::operator=(Json const &json)
 {
 	if (this == &json)
 		return (*this);
+
+	this->data = json.data;
 
 	return (*this);
 }

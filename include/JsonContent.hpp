@@ -37,7 +37,6 @@ public:
 	JsonContent(double const &content);
 	JsonContent(Json const &content);
 	JsonContent(std::string const &content);
-	JsonContent(JsonContent const &jsonContent);
 	JsonContent(std::vector<int> const &content);
 	JsonContent(std::vector<bool> const &content);
 	JsonContent(std::vector<char> const &content);
