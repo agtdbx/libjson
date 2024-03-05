@@ -26,7 +26,8 @@ BIN_DIR		:=	bin
 
 #=================================SOURCE FILES=================================#
 SRCS	:=	$(SOURCE_DIR)/main.cpp \
-			$(SOURCE_DIR)/jsonContent/jsonContent.cpp
+			$(SOURCE_DIR)/JsonContent.cpp \
+			$(SOURCE_DIR)/Json.cpp
 
 #====================================OBJECTS===================================#
 OBJS	:=	${SRCS:$(SOURCE_DIR)/%.cpp=$(BUILD_DIR)/%.o}
