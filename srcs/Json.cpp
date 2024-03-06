@@ -545,25 +545,25 @@ void	Json::parseFromString(std::string str)
 	int	len = 0;
 	bool	inString = false;
 	int	containerLevel = 0;
+	bool	parseSubJson = false;
+
+	// Get the start of the json
 	while (i < size)
 	{
-		// Get the start of the json
-		while (i < size)
-		{
-			if (str[i] == '"')
-				inString = !inString;
-			if (str[i] == '\n')
-				lign++;
-			if (str[i] == '{' && !inString)
-				break;
-			i++;
-		}
-		if (i == size)
-			throw JsonParseError("No json in string");
+		if (str[i] == '"')
+			inString = !inString;
+		if (str[i] == '\n')
+			lign++;
+		if (str[i] == '{' && !inString)
+			break;
+		i++;
+	}
+	if (i == size)
+		throw JsonParseError("No json in string");
 
-
+	while (i < size)
+	{
 		// Get the start of the key
-		std::cout << "Start of json" << std::endl;
 		while (i < size && str[i] != '"' && str[i] != '}')
 		{
 			if (str[i] == '\n')
@@ -574,7 +574,6 @@ void	Json::parseFromString(std::string str)
 			throw JsonParseError("Unclose json on " + strPos(lign, i - 1));
 		if (str[i] == '}') // The json is empty
 		{
-			std::cout << "Empty json\n";
 			this->data = newData;
 			return ;
 		}
@@ -593,7 +592,6 @@ void	Json::parseFromString(std::string str)
 			throw JsonParseError("Unclose string on " + strPos(lign, i - 1));
 
 		key = str.substr(i, len);
-		std::cout << "Key found : |" << key << "|\n";
 
 		// Search the separator beetween
 		i += len + 1;
@@ -647,7 +645,6 @@ void	Json::parseFromString(std::string str)
 			throw JsonParseError("Missing content after key on "
 									+ strPos(lign, i - 1));
 		std::string	content = str.substr(i, len);
-		std::cout << "Content found : |" << content << "|\n";
 		iEND = i + len;
 
 		//Remove whitespace after content
@@ -659,7 +656,6 @@ void	Json::parseFromString(std::string str)
 			len--;
 		}
 		content = content.substr(0, len + 1);
-		std::cout << "Content trim : |" << content << "|\n";
 
 		// Get the type of the content
 
@@ -719,12 +715,10 @@ void	Json::parseFromString(std::string str)
 				newData[key] = vector;
 			}
 			content = content.substr(1, content.size() - 2);
-			std::cout << "List content : |" << content << "|\n";
 
 			if (!strContainsNotInSubstr(content, ','))
 			{
 				std::string element = removeWhiteSpace(content);
-				std::cout << "One element : |" << element << "|\n";
 
 				if (element == "") // List empty
 				{
@@ -793,13 +787,8 @@ void	Json::parseFromString(std::string str)
 			}
 			else
 			{
-				std::cout << "Many elements\n";
 				std::vector<std::string>	elements = split(content, ',');
-
-				std::cout << "Element : |" << elements[0];
 				std::string first = removeWhiteSpace(elements[0]);
-				std::cout << "| -> |" << first << "|\n";
-
 				jsonType	vectorType = getTypeOfContent(first, lign, i);
 
 				if (vectorType == jTypeNull)
@@ -812,15 +801,11 @@ void	Json::parseFromString(std::string str)
 					vector.push_back(atol(first.c_str()));
 					for (std::size_t j = 1; j < elements.size(); j++)
 					{
-						std::cout << "Element : |" << elements[j];
 						std::string element = removeWhiteSpace(elements[j]);
-						std::cout << "| -> |" << element << "|\n";
-
 						jsonType elementType = getTypeOfContent(element, lign, i);
 						if (elementType != vectorType)
 							throw JsonParseError("Bad type in vector<int> on "
 									+ strPos(lign, i - 1));
-
 						vector.push_back(atol(element.c_str()));
 					}
 					newData[key] = vector;
@@ -832,10 +817,7 @@ void	Json::parseFromString(std::string str)
 					vector.push_back(atof(first.c_str()));
 					for (std::size_t j = 1; j < elements.size(); j++)
 					{
-						std::cout << "Element : |" << elements[j];
 						std::string element = removeWhiteSpace(elements[j]);
-						std::cout << "| -> |" << element << "|\n";
-
 						jsonType elementType = getTypeOfContent(element, lign, i);
 						if (elementType != vectorType)
 							throw JsonParseError("Bad type in vector<int> on "
@@ -851,10 +833,7 @@ void	Json::parseFromString(std::string str)
 					vector.push_back(atof(first.c_str()));
 					for (std::size_t j = 1; j < elements.size(); j++)
 					{
-						std::cout << "Element : |" << elements[j];
 						std::string element = removeWhiteSpace(elements[j]);
-						std::cout << "| -> |" << element << "|\n";
-
 						jsonType elementType = getTypeOfContent(element, lign, i);
 						if (elementType != vectorType)
 							throw JsonParseError("Bad type in vector<int> on "
@@ -867,17 +846,13 @@ void	Json::parseFromString(std::string str)
 				{
 					std::vector<bool>	vector;
 
-
 					if (first == "true")
 						vector.push_back(true);
 					else
 						vector.push_back(false);
 					for (std::size_t j = 1; j < elements.size(); j++)
 					{
-						std::cout << "Element : |" << elements[j];
 						std::string element = removeWhiteSpace(elements[j]);
-						std::cout << "| -> |" << element << "|\n";
-
 						jsonType elementType = getTypeOfContent(element, lign, i);
 						if (elementType != vectorType)
 							throw JsonParseError("Bad type in vector<int> on "
@@ -896,10 +871,7 @@ void	Json::parseFromString(std::string str)
 					vector.push_back(first[1]);
 					for (std::size_t j = 1; j < elements.size(); j++)
 					{
-						std::cout << "Element : |" << elements[j];
 						std::string element = removeWhiteSpace(elements[j]);
-						std::cout << "| -> |" << element << "|\n";
-
 						jsonType elementType = getTypeOfContent(element, lign, i);
 						if (elementType != vectorType)
 							throw JsonParseError("Bad type in vector<int> on "
@@ -915,10 +887,7 @@ void	Json::parseFromString(std::string str)
 					vector.push_back(first.substr(1, first.size()-2));
 					for (std::size_t j = 1; j < elements.size(); j++)
 					{
-						std::cout << "Element : |" << elements[j];
 						std::string element = removeWhiteSpace(elements[j]);
-						std::cout << "| -> |" << element << "|\n";
-
 						jsonType elementType = getTypeOfContent(element, lign, i);
 						if (elementType != vectorType)
 							throw JsonParseError("Bad type in vector<int> on "
@@ -936,10 +905,7 @@ void	Json::parseFromString(std::string str)
 					vector.push_back(firstJson);
 					for (std::size_t j = 1; j < elements.size(); j++)
 					{
-						std::cout << "Element : |" << elements[j];
 						std::string element = removeWhiteSpace(elements[j]);
-						std::cout << "| -> |" << element << "|\n";
-
 						jsonType elementType = getTypeOfContent(element, lign, i);
 						if (elementType != vectorType)
 							throw JsonParseError("Bad type in vector<int> on "
@@ -960,11 +926,10 @@ void	Json::parseFromString(std::string str)
 		// Content is a json
 		else if (content[0] == '{')
 		{
+			parseSubJson = true;
 			content += '}';
-			std::cout << "Json sub parse on |" << content << "|\n\n";
 			Json json;
 			json.parseFromString(content);
-			std::cout << "\n";
 			newData[key] = json;
 		}
 		// Content is a bool
@@ -992,14 +957,16 @@ void	Json::parseFromString(std::string str)
 		// Go to , or }
 		i = iEND;
 
-
-
 		// End of the json
 		if (str[i] == '}')
 		{
-			std::cout << "End of json" << std::endl;
-			this->data = newData;
-			return ;
+			if (parseSubJson)
+				parseSubJson = false;
+			else
+			{
+				this->data = newData;
+				return ;
+			}
 		}
 
 		i++;
