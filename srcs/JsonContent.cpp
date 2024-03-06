@@ -13,7 +13,25 @@ JsonContent::JsonContent(void)
 JsonContent::JsonContent(int const &content)
 {
 	this->type = jTypeInt;
-	this->content = new int(content);
+	this->content = new long(content);
+}
+
+JsonContent::JsonContent(unsigned int const &content)
+{
+	this->type = jTypeInt;
+	this->content = new long(content);
+}
+
+JsonContent::JsonContent(long const &content)
+{
+	this->type = jTypeInt;
+	this->content = new long(content);
+}
+
+JsonContent::JsonContent(unsigned long const &content)
+{
+	this->type = jTypeInt;
+	this->content = new long(content);
 }
 
 JsonContent::JsonContent(bool const &content)
@@ -52,7 +70,6 @@ JsonContent::JsonContent(char const *str)
 
 }
 
-
 JsonContent::JsonContent(std::string const &content)
 {
 	this->type = jTypeString;
@@ -63,7 +80,34 @@ JsonContent::JsonContent(std::string const &content)
 JsonContent::JsonContent(std::vector<int> const &content)
 {
 	this->type = jTypeVectorInt;
-	this->content = new std::vector<int>(content);
+	std::vector<long> tmp;
+	for (std::size_t i = 0; i < content.size(); i++)
+		tmp.push_back(content[i]);
+	this->content = new std::vector<long>(tmp);
+}
+
+JsonContent::JsonContent(std::vector<unsigned int> const &content)
+{
+	this->type = jTypeVectorInt;
+	std::vector<long> tmp;
+	for (std::size_t i = 0; i < content.size(); i++)
+		tmp.push_back(content[i]);
+	this->content = new std::vector<long>(tmp);
+}
+
+JsonContent::JsonContent(std::vector<long> const &content)
+{
+	this->type = jTypeVectorInt;
+	this->content = new std::vector<long>(content);
+}
+
+JsonContent::JsonContent(std::vector<unsigned long> const &content)
+{
+	this->type = jTypeVectorInt;
+	std::vector<long> tmp;
+	for (std::size_t i = 0; i < content.size(); i++)
+		tmp.push_back(content[i]);
+	this->content = new std::vector<long>(tmp);
 }
 
 JsonContent::JsonContent(std::vector<bool> const &content)
@@ -106,7 +150,7 @@ JsonContent::JsonContent(JsonContent const &jsonContent)
 {
 	this->type = jsonContent.type;
 	if (this->type == jTypeInt)
-		this->content = new int(*((int *)jsonContent.content));
+		this->content = new long(*((int *)jsonContent.content));
 	else if (this->type == jTypeBool)
 		this->content = new bool(*((bool *)jsonContent.content));
 	else if (this->type == jTypeChar)
@@ -120,8 +164,8 @@ JsonContent::JsonContent(JsonContent const &jsonContent)
 	else if (this->type == jTypeString)
 		this->content = new std::string(*((std::string *)jsonContent.content));
 	else if (this->type == jTypeVectorInt)
-		this->content = new std::vector<int>
-							(*((std::vector<int> *)jsonContent.content));
+		this->content = new std::vector<long>
+							(*((std::vector<long> *)jsonContent.content));
 	else if (this->type == jTypeVectorBool)
 		this->content = new std::vector<bool>
 							(*((std::vector<bool> *)jsonContent.content));
@@ -161,11 +205,11 @@ jsonType	JsonContent::getType(void) const
 	return (this->type);
 }
 
-int	&JsonContent::getInt(void) const
+long	&JsonContent::getInt(void) const
 {
 	if (this->type != jTypeInt)
 		throw JsonContentTypeError();
-	return *((int *)this->content);
+	return *((long *)this->content);
 }
 
 bool	&JsonContent::getBool(void) const
@@ -210,11 +254,11 @@ std::string	&JsonContent::getString(void) const
 	return *((std::string *)this->content);
 }
 
-std::vector<int>	&JsonContent::getVectorInt(void) const
+std::vector<long>	&JsonContent::getVectorInt(void) const
 {
 	if (this->type != jTypeVectorInt)
 		throw JsonContentTypeError();
-	return *((std::vector<int> *)this->content);
+	return *((std::vector<long> *)this->content);
 }
 
 std::vector<bool>	&JsonContent::getVectorBool(void) const
@@ -267,7 +311,28 @@ void	JsonContent::setContent(int const &content)
 {
 	this->clearContent();
 	this->type = jTypeInt;
-	this->content = new int(content);
+	this->content = new long(content);
+}
+
+void	JsonContent::setContent(unsigned int const &content)
+{
+	this->clearContent();
+	this->type = jTypeInt;
+	this->content = new long(content);
+}
+
+void	JsonContent::setContent(long const &content)
+{
+	this->clearContent();
+	this->type = jTypeInt;
+	this->content = new long(content);
+}
+
+void	JsonContent::setContent(unsigned long const &content)
+{
+	this->clearContent();
+	this->type = jTypeInt;
+	this->content = new long(content);
 }
 
 void	JsonContent::setContent(bool const &content)
@@ -316,7 +381,37 @@ void	JsonContent::setContent(std::vector<int> const &content)
 {
 	this->clearContent();
 	this->type = jTypeVectorInt;
-	this->content = new std::vector<int>(content);
+	std::vector<long>	tmp;
+	for (std::size_t i = 0; i < content.size(); i++)
+		tmp.push_back(content[i]);
+	this->content = new std::vector<long>(tmp);
+}
+
+void	JsonContent::setContent(std::vector<unsigned int> const &content)
+{
+	this->clearContent();
+	this->type = jTypeVectorInt;
+	std::vector<long>	tmp;
+	for (std::size_t i = 0; i < content.size(); i++)
+		tmp.push_back(content[i]);
+	this->content = new std::vector<long>(tmp);
+}
+
+void	JsonContent::setContent(std::vector<long> const &content)
+{
+	this->clearContent();
+	this->type = jTypeVectorInt;
+	this->content = new std::vector<long>(content);
+}
+
+void	JsonContent::setContent(std::vector<unsigned long> const &content)
+{
+	this->clearContent();
+	this->type = jTypeVectorInt;
+	std::vector<long>	tmp;
+	for (std::size_t i = 0; i < content.size(); i++)
+		tmp.push_back(content[i]);
+	this->content = new std::vector<long>(tmp);
 }
 
 void	JsonContent::setContent(std::vector<bool> const &content)
@@ -367,6 +462,27 @@ void	JsonContent::setContent(std::vector<std::string> const &content)
 // Operators
 ////////////////////////////////////////////////////////////////////////////////
 JsonContent	&JsonContent::operator=(int const &content)
+{
+	this->clearContent();
+	this->setContent(content);
+	return (*this);
+}
+
+JsonContent	&JsonContent::operator=(unsigned int const &content)
+{
+	this->clearContent();
+	this->setContent(content);
+	return (*this);
+}
+
+JsonContent	&JsonContent::operator=(long const &content)
+{
+	this->clearContent();
+	this->setContent(content);
+	return (*this);
+}
+
+JsonContent	&JsonContent::operator=(unsigned long const &content)
 {
 	this->clearContent();
 	this->setContent(content);
@@ -429,6 +545,27 @@ JsonContent	&JsonContent::operator=(std::vector<int> const &content)
 	return (*this);
 }
 
+JsonContent	&JsonContent::operator=(std::vector<unsigned int> const &content)
+{
+	this->clearContent();
+	this->setContent(content);
+	return (*this);
+}
+
+JsonContent	&JsonContent::operator=(std::vector<long> const &content)
+{
+	this->clearContent();
+	this->setContent(content);
+	return (*this);
+}
+
+JsonContent	&JsonContent::operator=(std::vector<unsigned long> const &content)
+{
+	this->clearContent();
+	this->setContent(content);
+	return (*this);
+}
+
 JsonContent	&JsonContent::operator=(std::vector<bool> const &content)
 {
 	this->clearContent();
@@ -479,7 +616,7 @@ JsonContent	&JsonContent::operator=(JsonContent const &jsonContent)
 	this->clearContent();
 	this->type = jsonContent.type;
 	if (this->type == jTypeInt)
-		this->content = new int(*((int *)jsonContent.content));
+		this->content = new long(*((long *)jsonContent.content));
 	else if (this->type == jTypeBool)
 		this->content = new bool(*((bool *)jsonContent.content));
 	else if (this->type == jTypeChar)
@@ -493,8 +630,8 @@ JsonContent	&JsonContent::operator=(JsonContent const &jsonContent)
 	else if (this->type == jTypeString)
 		this->content = new std::string(*((std::string *)jsonContent.content));
 	else if (this->type == jTypeVectorInt)
-		this->content = new std::vector<int>
-							(*((std::vector<int> *)jsonContent.content));
+		this->content = new std::vector<long>
+							(*((std::vector<long> *)jsonContent.content));
 	else if (this->type == jTypeVectorBool)
 		this->content = new std::vector<bool>
 							(*((std::vector<bool> *)jsonContent.content));
@@ -535,7 +672,7 @@ std::ostream	&operator<<(std::ostream &os, JsonContent &jsonContent)
 std::string	JsonContent::toString(bool indented)
 {
 	if (indented)
-		return (this->toString(0));
+		return (this->toStringIndented(0));
 	return (this->toStringOneLine());
 }
 
@@ -585,7 +722,7 @@ std::string	JsonContent::toStringOneLine(void)
 	else if (this->type == jTypeVectorInt)
 	{
 		std::string	print = "[";
-		std::vector<int>	vector = this->getVectorInt();
+		std::vector<long>	vector = this->getVectorInt();
 		for (std::size_t i = 0; i < vector.size(); i++)
 		{
 			if (i != 0)
@@ -725,7 +862,7 @@ std::string	JsonContent::toStringIndented(int indentLevel)
 	{
 		std::string	print = "[\n";
 		indentLevel++;
-		std::vector<int>	vector = this->getVectorInt();
+		std::vector<long>	vector = this->getVectorInt();
 		if (vector.size() == 0)
 			return ("[]");
 		for (std::size_t i = 0; i < vector.size(); i++)

@@ -31,6 +31,9 @@ class JsonContent
 public:
 	JsonContent(void);
 	JsonContent(int const &content);
+	JsonContent(unsigned int const &content);
+	JsonContent(long const &content);
+	JsonContent(unsigned long const &content);
 	JsonContent(bool const &content);
 	JsonContent(char const &content);
 	JsonContent(float const &content);
@@ -39,6 +42,9 @@ public:
 	JsonContent(char const *str);
 	JsonContent(std::string const &content);
 	JsonContent(std::vector<int> const &content);
+	JsonContent(std::vector<unsigned int> const &content);
+	JsonContent(std::vector<long> const &content);
+	JsonContent(std::vector<unsigned long> const &content);
 	JsonContent(std::vector<bool> const &content);
 	JsonContent(std::vector<char> const &content);
 	JsonContent(std::vector<float> const &content);
@@ -49,14 +55,14 @@ public:
 	~JsonContent();
 
 	jsonType	getType(void) const;
-	int			&getInt(void) const;
+	long		&getInt(void) const;
 	bool		&getBool(void) const;
 	char		&getChar(void) const;
 	float		&getFloat(void) const;
 	double		&getDouble(void) const;
 	Json		&getJson(void) const;
 	std::string	&getString(void) const;
-	std::vector<int>			&getVectorInt(void) const;
+	std::vector<long>			&getVectorInt(void) const;
 	std::vector<bool>			&getVectorBool(void) const;
 	std::vector<char>			&getVectorChar(void) const;
 	std::vector<float>			&getVectorFloat(void) const;
@@ -65,6 +71,9 @@ public:
 	std::vector<std::string>	&getVectorString(void) const;
 
 	void	setContent(int const &content);
+	void	setContent(unsigned int const &content);
+	void	setContent(long const &content);
+	void	setContent(unsigned long const &content);
 	void	setContent(bool const &content);
 	void	setContent(char const &content);
 	void	setContent(float const &content);
@@ -72,6 +81,9 @@ public:
 	void	setContent(Json const &content);
 	void	setContent(std::string const &content);
 	void	setContent(std::vector<int> const &content);
+	void	setContent(std::vector<unsigned int> const &content);
+	void	setContent(std::vector<long> const &content);
+	void	setContent(std::vector<unsigned long> const &content);
 	void	setContent(std::vector<bool> const &content);
 	void	setContent(std::vector<char> const &content);
 	void	setContent(std::vector<float> const &content);
@@ -80,6 +92,9 @@ public:
 	void	setContent(std::vector<std::string> const &content);
 
 	JsonContent	&operator=(int const &content);
+	JsonContent	&operator=(unsigned int const &content);
+	JsonContent	&operator=(long const &content);
+	JsonContent	&operator=(unsigned long const &content);
 	JsonContent	&operator=(bool const &content);
 	JsonContent	&operator=(char const &content);
 	JsonContent	&operator=(float const &content);
@@ -88,6 +103,9 @@ public:
 	JsonContent	&operator=(char const *content);
 	JsonContent	&operator=(std::string const &content);
 	JsonContent	&operator=(std::vector<int> const &content);
+	JsonContent	&operator=(std::vector<unsigned int> const &content);
+	JsonContent	&operator=(std::vector<long> const &content);
+	JsonContent	&operator=(std::vector<unsigned long> const &content);
 	JsonContent	&operator=(std::vector<bool> const &content);
 	JsonContent	&operator=(std::vector<char> const &content);
 	JsonContent	&operator=(std::vector<float> const &content);

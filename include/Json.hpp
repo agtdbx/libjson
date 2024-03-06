@@ -16,8 +16,11 @@ public:
 
 	void	setContent(std::string key, JsonContent content);
 
-	Json	&operator=(Json const &json);
+	Json		&operator=(Json const &json);
 	JsonContent	&operator[](int key);
+	JsonContent	&operator[](unsigned int key);
+	JsonContent	&operator[](long key);
+	JsonContent	&operator[](unsigned long key);
 	JsonContent	&operator[](bool key);
 	JsonContent	&operator[](char key);
 	JsonContent	&operator[](float key);
@@ -25,7 +28,18 @@ public:
 	JsonContent	&operator[](char const *key);
 	JsonContent	&operator[](std::string key);
 
-	class JsonKeyError : public std::exception
+	std::string	toString(bool indented);
+	std::string	toStringOneLine(void);
+	std::string	toStringIndented(int indentLevel);
+	void		parseFromString(std::string str);
+
+private:
+	std::map<std::string, JsonContent>	data;
+};
+
+std::ostream	&operator<<(std::ostream &os, Json &json);
+
+class JsonKeyError : public std::exception
 	{
 	public:
 		const char	*what(void) const throw()
@@ -34,14 +48,19 @@ public:
 		}
 	};
 
-	std::string	toString(bool indented);
-	std::string	toStringOneLine(void);
-	std::string	toStringIndented(int indentLevel);
-
+class JsonParseError : public std::exception
+{
+public:
+	JsonParseError(std::string str)
+	{
+		this->str = "Json : Parse error : " + str;
+	}
+	const char	*what(void) const throw()
+	{
+		return (this->str.c_str());
+	}
 private:
-	std::map<std::string, JsonContent>	data;
+	std::string	str;
 };
-
-std::ostream	&operator<<(std::ostream &os, Json &json);
 
 #endif
