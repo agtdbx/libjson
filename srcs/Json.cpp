@@ -185,7 +185,7 @@ JsonContent	&Json::operator[](std::string key)
 
 std::ostream	&operator<<(std::ostream &os, Json &json)
 {
-	os << json.toString();
+	os << json.toStringIndented(0);
 	return (os);
 }
 
@@ -193,7 +193,15 @@ std::ostream	&operator<<(std::ostream &os, Json &json)
 ////////////////////////////////////////////////////////////////////////////////
 // Public methods
 ////////////////////////////////////////////////////////////////////////////////
-std::string	Json::toString(void)
+std::string	Json::toString(bool indented)
+{
+	if (indented)
+		return (this->toString(true));
+	return (this->toStringOneLine());
+}
+
+
+std::string	Json::toStringOneLine(void)
 {
 	std::string	print = "{";
 
@@ -208,13 +216,49 @@ std::string	Json::toString(void)
 		{
 			print += ", ";
 		}
-		print += "\"" + it->first + "\" : " + it->second.toString();
+		print += "\"" + it->first + "\" : " + it->second.toStringOneLine();
 		it++;
 	}
 
 	print += "}";
 	return (print);
 }
+
+
+std::string	Json::toStringIndented(int indentLevel)
+{
+	if (this->data.size() == 0)
+		return ("{}");
+
+	std::string	print = "{\n";
+	indentLevel++;
+
+	std::map<std::string, JsonContent>::iterator it = this->data.begin();
+
+	bool	start = true;
+	while (it != this->data.end())
+	{
+		if (start)
+			start = false;
+		else
+		{
+			print += ",\n";
+		}
+		for (int i = 0; i < indentLevel; i++)
+			print += "\t";
+		print += "\"" + it->first + "\" : " +
+					it->second.toStringIndented(indentLevel);
+		it++;
+	}
+
+	indentLevel--;
+	print += "\n";
+	for (int i = 0; i < indentLevel; i++)
+		print += "\t";
+	print += "}";
+	return (print);
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////////

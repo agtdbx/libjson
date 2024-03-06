@@ -105,7 +105,9 @@ public:
 		}
 	};
 
-	std::string	toString(void);
+	std::string	toString(bool indented);
+	std::string	toStringOneLine(void);
+	std::string	toStringIndented(int indentLevel);
 
 private:
 	jsonType	type;

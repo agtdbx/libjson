@@ -476,8 +476,6 @@ JsonContent	&JsonContent::operator=(JsonContent const &jsonContent)
 	if (this == &jsonContent)
 		return (*this);
 
-	std::cout << "test\n";
-
 	this->clearContent();
 	this->type = jsonContent.type;
 	if (this->type == jTypeInt)
@@ -526,7 +524,7 @@ JsonContent	&JsonContent::operator=(JsonContent const &jsonContent)
 
 std::ostream	&operator<<(std::ostream &os, JsonContent &jsonContent)
 {
-	os << jsonContent.toString();
+	os << jsonContent.toString(true);
 	return (os);
 }
 
@@ -534,7 +532,15 @@ std::ostream	&operator<<(std::ostream &os, JsonContent &jsonContent)
 ////////////////////////////////////////////////////////////////////////////////
 // Public methods
 ////////////////////////////////////////////////////////////////////////////////
-std::string	JsonContent::toString(void)
+std::string	JsonContent::toString(bool indented)
+{
+	if (indented)
+		return (this->toString(0));
+	return (this->toStringOneLine());
+}
+
+
+std::string	JsonContent::toStringOneLine(void)
 {
 	if (this->type == jTypeInt)
 	{
@@ -568,7 +574,7 @@ std::string	JsonContent::toString(void)
 	}
 	else if (this->type == jTypeJson)
 	{
-		std::string	print = this->getJson().toString();
+		std::string	print = this->getJson().toStringOneLine();
 		return (print);
 	}
 	else if (this->type == jTypeString)
@@ -649,7 +655,7 @@ std::string	JsonContent::toString(void)
 		{
 			if (i != 0)
 				print += ", ";
-			print += vector[i].toString();
+			print += vector[i].toStringOneLine();
 		}
 		return (print + "]");
 	}
@@ -663,6 +669,208 @@ std::string	JsonContent::toString(void)
 				print += ", ";
 			print += "\"" + vector[i] + "\"";
 		}
+		return (print + "]");
+	}
+	else
+	{
+		std::string	print = "Null";
+		return (print);
+	}
+}
+
+
+std::string	JsonContent::toStringIndented(int indentLevel)
+{
+	if (this->type == jTypeInt)
+	{
+		std::string	print = std::to_string(this->getInt());
+		return (print);
+	}
+	else if (this->type == jTypeBool)
+	{
+		std::string	print= "";
+		if (this->getBool())
+			print += "true";
+		else
+			print += "false";
+		return (print);
+	}
+	else if (this->type == jTypeChar)
+	{
+		std::string	print = "";
+		print += this->getChar();
+		return ("'" + print + "'");
+	}
+	else if (this->type == jTypeFloat)
+	{
+		std::string	print = std::to_string(this->getFloat());
+		return (print + "f");
+	}
+	else if (this->type == jTypeDouble)
+	{
+		std::string	print = std::to_string(this->getDouble());
+		return (print);
+	}
+	else if (this->type == jTypeJson)
+	{
+		std::string	print = this->getJson().toStringIndented(indentLevel);
+		return (print);
+	}
+	else if (this->type == jTypeString)
+	{
+		std::string	print = this->getString();
+		return ("\"" + print + "\"");
+	}
+	else if (this->type == jTypeVectorInt)
+	{
+		std::string	print = "[\n";
+		indentLevel++;
+		std::vector<int>	vector = this->getVectorInt();
+		if (vector.size() == 0)
+			return ("[]");
+		for (std::size_t i = 0; i < vector.size(); i++)
+		{
+			if (i != 0)
+				print += ",\n";
+			for (int i = 0; i < indentLevel; i++)\
+				print += "\t";
+			print += std::to_string(vector[i]);
+		}
+		print += "\n";
+		indentLevel--;
+		for (int i = 0; i < indentLevel; i++)\
+			print += "\t";
+		return (print + "]");
+	}
+	else if (this->type == jTypeVectorBool)
+	{
+		std::string	print = "[\n";
+		indentLevel++;
+		std::vector<bool>	vector = this->getVectorBool();
+		if (vector.size() == 0)
+			return ("[]");
+		for (std::size_t i = 0; i < vector.size(); i++)
+		{
+			if (i != 0)
+				print += ",\n";
+			for (int i = 0; i < indentLevel; i++)\
+				print += "\t";
+			if (vector[i])
+				print += "true";
+			else
+				print += "false";
+		}
+		print += "\n";
+		indentLevel--;
+		for (int i = 0; i < indentLevel; i++)\
+			print += "\t";
+		return (print + "]");
+	}
+	else if (this->type == jTypeVectorChar)
+	{
+		std::string	print = "[\n";
+		indentLevel++;
+		std::vector<char>	vector = this->getVectorChar();
+		if (vector.size() == 0)
+			return ("[]");
+		for (std::size_t i = 0; i < vector.size(); i++)
+		{
+			if (i != 0)
+				print += ",\n";
+			for (int i = 0; i < indentLevel; i++)\
+				print += "\t";
+			print += "'";
+			print += vector[i];
+			print += "'";
+		}
+		print += "\n";
+		indentLevel--;
+		for (int i = 0; i < indentLevel; i++)\
+			print += "\t";
+		return (print + "]");
+	}
+	else if (this->type == jTypeVectorFloat)
+	{
+		std::string	print = "[\n";
+		indentLevel++;
+		std::vector<float>	vector = this->getVectorFloat();
+		if (vector.size() == 0)
+			return ("[]");
+		for (std::size_t i = 0; i < vector.size(); i++)
+		{
+			if (i != 0)
+				print += ",\n";
+			for (int i = 0; i < indentLevel; i++)\
+				print += "\t";
+			print += std::to_string(vector[i]) + "f";
+		}
+		print += "\n";
+		indentLevel--;
+		for (int i = 0; i < indentLevel; i++)\
+			print += "\t";
+		return (print + "]");
+	}
+	else if (this->type == jTypeVectorDouble)
+	{
+		std::string	print = "[\n";
+		indentLevel++;
+		std::vector<double>	vector = this->getVectorDouble();
+		if (vector.size() == 0)
+			return ("[]");
+		for (std::size_t i = 0; i < vector.size(); i++)
+		{
+			if (i != 0)
+				print += ",\n";
+			for (int i = 0; i < indentLevel; i++)\
+				print += "\t";
+			print += std::to_string(vector[i]);
+		}
+		print += "\n";
+		indentLevel--;
+		for (int i = 0; i < indentLevel; i++)\
+			print += "\t";
+		return (print + "]");
+	}
+	else if (this->type == jTypeVectorJson)
+	{
+		std::string	print = "[\n";
+		indentLevel++;
+		std::vector<Json>	vector = this->getVectorJson();
+		if (vector.size() == 0)
+			return ("[]");
+		for (std::size_t i = 0; i < vector.size(); i++)
+		{
+			if (i != 0)
+				print += ",\n";
+			for (int i = 0; i < indentLevel; i++)\
+				print += "\t";
+			print += vector[i].toStringIndented(indentLevel);
+		}
+		print += "\n";
+		indentLevel--;
+		for (int i = 0; i < indentLevel; i++)\
+			print += "\t";
+		return (print + "]");
+	}
+	else if (this->type == jTypeVectorString)
+	{
+		std::string	print = "[\n";
+		indentLevel++;
+		std::vector<std::string>	vector = this->getVectorString();
+		if (vector.size() == 0)
+			return ("[]");
+		for (std::size_t i = 0; i < vector.size(); i++)
+		{
+			if (i != 0)
+				print += ",\n";
+			for (int i = 0; i < indentLevel; i++)\
+				print += "\t";
+			print += "\"" + vector[i] + "\"";
+		}
+		print += "\n";
+		indentLevel--;
+		for (int i = 0; i < indentLevel; i++)\
+			print += "\t";
 		return (print + "]");
 	}
 	else
