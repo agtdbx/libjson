@@ -29,6 +29,9 @@ SRCS	:=	$(SOURCE_DIR)/main.cpp \
 			$(SOURCE_DIR)/JsonContent.cpp \
 			$(SOURCE_DIR)/Json.cpp
 
+SRCS_BUILD	:=	$(SOURCE_DIR)/JsonContent.cpp \
+				$(SOURCE_DIR)/Json.cpp
+
 #====================================OBJECTS===================================#
 OBJS	:=	${SRCS:$(SOURCE_DIR)/%.cpp=$(BUILD_DIR)/%.o}
 DEPS	:=	${SRCS:$(SOURCE_DIR)/%.cpp=$(BUILD_DIR)/%.d}
@@ -144,16 +147,16 @@ runval: $(BIN_DIR)/$(NAME)
 	@cd $(BIN_DIR); valgrind ./$(NAME)
 	@echo "$(GREEN)Have a nice day :)$(NOC)"
 
-build-linux:
+build:
 	@echo "$(BLUE)Create a build for linux$(NOC)"
-	@rm -rf build_linux
-	@mkdir build_linux
-	@echo "$(GREEN)Done$(NOC)"
-
-build-windows:
-	@echo "$(BLUE)Create a build for windows$(NOC)"
-	@rm -rf build_windows
-	@mkdir build_windows
+	@rm -rf build_jsonlib
+	@mkdir build_jsonlib
+	@mkdir build_jsonlib/bin
+	@mkdir build_jsonlib/lib
+	@cp -r include build_jsonlib/include
+	@ar rc build_jsonlib/lib/libjson.a $(SRCS_BUILD)
+	@g++ -shared -o build_jsonlib/bin/libjson.so $(INCLUDE) -fPIC $(SRCS_BUILD)
+	@x86_64-w64-mingw32-g++ -shared -o build_jsonlib/bin/libjson.dll $(INCLUDE) $(SRCS_BUILD)
 	@echo "$(GREEN)Done$(NOC)"
 
 create_script:
@@ -173,6 +176,6 @@ create_script:
 	@gcc .progress_bar.c -o .progress_bar
 	@rm -rf .progress_bar.c
 
-.PHONY: all clean fclean re run runval build-linux build-windows create_script
+.PHONY: all clean fclean re run runval build create_script
 
 -include $(DEPS)
