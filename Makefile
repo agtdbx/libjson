@@ -150,14 +150,19 @@ runval: $(BIN_DIR)/$(NAME)
 build:
 	@echo "$(BLUE)Create a build for libjson$(NOC)"
 	@rm -rf build_jsonlib
-	@mkdir build_jsonlib
-	@mkdir build_jsonlib/bin
-	@mkdir build_jsonlib/lib
-	@cp -r include build_jsonlib/include
-	@cp README.md build_jsonlib/README.md
-	@ar rc build_jsonlib/lib/libjson.a $(SRCS_BUILD)
-	@g++ -shared -o build_jsonlib/bin/libjson.so $(INCLUDE) -fPIC $(SRCS_BUILD)
-	@x86_64-w64-mingw32-g++ -shared -o build_jsonlib/bin/libjson.dll $(INCLUDE) $(SRCS_BUILD)
+	@mkdir -p build_jsonlib/libjson
+	@mkdir build_jsonlib/libjson/bin
+	@mkdir build_jsonlib/libjson/lib
+	@cp -r include build_jsonlib/libjson/include
+	@cp README.md build_jsonlib/libjson/README.md
+	@ar rc build_jsonlib/libjson/lib/libjson.a $(SRCS_BUILD)
+	@g++ -shared -o build_jsonlib/libjson/bin/libjson.so $(INCLUDE) \
+		-fPIC $(SRCS_BUILD)
+	@x86_64-w64-mingw32-g++ -shared -o build_jsonlib/libjson/bin/libjson.dll\
+		$(INCLUDE) $(SRCS_BUILD)
+	@echo "$(BLUE)Create compressed versions$(NOC)"
+	@tar -czvf build_jsonlib/libjson.tar.gz build_jsonlib/libjson 1>/dev/null
+	@zip -r build_jsonlib/libjson.zip build_jsonlib/libjson 1>/dev/null
 	@echo "$(GREEN)Done$(NOC)"
 
 create_script:
