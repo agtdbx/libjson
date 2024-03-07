@@ -91,6 +91,8 @@ public:
 	void	setContent(std::vector<Json> const &content);
 	void	setContent(std::vector<std::string> const &content);
 
+	JsonContent	&operator=(void const *content);
+	JsonContent	&operator=(std::nullptr_t const content);
 	JsonContent	&operator=(int const &content);
 	JsonContent	&operator=(unsigned int const &content);
 	JsonContent	&operator=(long const &content);
@@ -113,15 +115,8 @@ public:
 	JsonContent	&operator=(std::vector<Json> const &content);
 	JsonContent	&operator=(std::vector<std::string> const &content);
 	JsonContent	&operator=(JsonContent const &jsonContent);
-
-	class JsonContentTypeError : public std::exception
-	{
-	public:
-		const char	*what(void) const throw()
-		{
-			return ("JsonContent : Type error");
-		}
-	};
+	bool		operator==(JsonContent const &jsonContent) const;
+	bool		operator!=(JsonContent const &jsonContent) const;
 
 	std::string	toString(bool indented);
 	std::string	toStringOneLine(void);
@@ -135,5 +130,29 @@ private:
 };
 
 std::ostream	&operator<<(std::ostream &os, JsonContent &jsonContent);
+
+class JsonContentTypeError : public std::exception
+{
+public:
+	const char	*what(void) const throw()
+	{
+		return ("JsonContent : Type error");
+	}
+};
+
+template <typename T>
+static bool	isVectorEqual(std::vector<T> *vec1, std::vector<T> *vec2)
+{
+	if (vec1->size() != vec2->size())
+		return (false);
+
+	for (std::size_t i = 0; i < vec1->size(); i++)
+	{
+		if (vec1->at(i) != vec2->at(i))
+			return (false);
+	}
+	return (true);
+}
+
 
 #endif

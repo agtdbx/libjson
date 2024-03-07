@@ -67,6 +67,10 @@ int	main(void)
 	json["vecString"] = vecString;
 	json["vecJson"] = vecJson;
 	json["vecEmpty"] = vecEmpty;
+	json["NULL0"];
+	json["NULL1"] = (void *)0;
+	json["NULL2"] = nullptr;
+	json.setContent("uwu", 4);
 
 	std::string	strTest = json.toString(false);
 

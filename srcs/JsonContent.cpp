@@ -461,6 +461,18 @@ void	JsonContent::setContent(std::vector<std::string> const &content)
 ////////////////////////////////////////////////////////////////////////////////
 // Operators
 ////////////////////////////////////////////////////////////////////////////////
+JsonContent	&JsonContent::operator=(void const *content)
+{
+	return (*this);
+}
+
+
+JsonContent	&JsonContent::operator=(std::nullptr_t const content)
+{
+	return (*this);
+}
+
+
 JsonContent	&JsonContent::operator=(int const &content)
 {
 	this->clearContent();
@@ -481,6 +493,7 @@ JsonContent	&JsonContent::operator=(long const &content)
 	this->setContent(content);
 	return (*this);
 }
+
 
 JsonContent	&JsonContent::operator=(unsigned long const &content)
 {
@@ -658,6 +671,99 @@ JsonContent	&JsonContent::operator=(JsonContent const &jsonContent)
 
 	return (*this);
 }
+
+
+bool	JsonContent::operator==(JsonContent const &jsonContent) const
+{
+	if (this->type != jsonContent.type)
+		return (false);
+
+	if (this->type == jTypeInt)
+		return ((*(long *)this->content) == (*(long *)jsonContent.content));
+	else if (this->type == jTypeBool)
+		return ((*(bool *)this->content) == (*(bool *)jsonContent.content));
+	else if (this->type == jTypeChar)
+		return ((*(char *)this->content) == (*(char *)jsonContent.content));
+	else if (this->type == jTypeFloat)
+		return ((*(float *)this->content) == (*(float *)jsonContent.content));
+	else if (this->type == jTypeDouble)
+		return ((*(double *)this->content) == (*(double *)jsonContent.content));
+	else if (this->type == jTypeJson)
+		return ((*(Json *)this->content) == (*(Json *)jsonContent.content));
+	else if (this->type == jTypeString)
+		return ((*(std::string *)this->content) ==
+				(*(std::string *)jsonContent.content));
+	else if (this->type == jTypeVectorInt)
+		return (isVectorEqual((std::vector<long> *)this->content,
+								(std::vector<long> *)jsonContent.content));
+	else if (this->type == jTypeVectorBool)
+		return (isVectorEqual((std::vector<bool> *)this->content,
+								(std::vector<bool> *)jsonContent.content));
+	else if (this->type == jTypeVectorChar)
+		return (isVectorEqual((std::vector<char> *)this->content,
+								(std::vector<char> *)jsonContent.content));
+	else if (this->type == jTypeVectorFloat)
+		return (isVectorEqual((std::vector<float> *)this->content,
+								(std::vector<float> *)jsonContent.content));
+	else if (this->type == jTypeVectorDouble)
+		return (isVectorEqual((std::vector<double> *)this->content,
+								(std::vector<double> *)jsonContent.content));
+	else if (this->type == jTypeVectorJson)
+		return (isVectorEqual((std::vector<Json> *)this->content,
+								(std::vector<Json> *)jsonContent.content));
+	else if (this->type == jTypeVectorString)
+		return (isVectorEqual((std::vector<std::string> *)this->content,
+								(std::vector<std::string> *)jsonContent.content));
+
+	return (true);
+}
+
+bool	JsonContent::operator!=(JsonContent const &jsonContent) const
+{
+	if (this->type != jsonContent.type)
+		return (true);
+
+	if (this->type == jTypeInt)
+		return ((*(long *)this->content) != (*(long *)jsonContent.content));
+	else if (this->type == jTypeBool)
+		return ((*(bool *)this->content) != (*(bool *)jsonContent.content));
+	else if (this->type == jTypeChar)
+		return ((*(char *)this->content) != (*(char *)jsonContent.content));
+	else if (this->type == jTypeFloat)
+		return ((*(float *)this->content) != (*(float *)jsonContent.content));
+	else if (this->type == jTypeDouble)
+		return ((*(double *)this->content) != (*(double *)jsonContent.content));
+	else if (this->type == jTypeJson)
+		return ((*(Json *)this->content) != (*(Json *)jsonContent.content));
+	else if (this->type == jTypeString)
+		return ((*(std::string *)this->content) !=
+				(*(std::string *)jsonContent.content));
+	else if (this->type == jTypeVectorInt)
+		return (!isVectorEqual((std::vector<long> *)this->content,
+								(std::vector<long> *)jsonContent.content));
+	else if (this->type == jTypeVectorBool)
+		return (!isVectorEqual((std::vector<bool> *)this->content,
+								(std::vector<bool> *)jsonContent.content));
+	else if (this->type == jTypeVectorChar)
+		return (!isVectorEqual((std::vector<char> *)this->content,
+								(std::vector<char> *)jsonContent.content));
+	else if (this->type == jTypeVectorFloat)
+		return (!isVectorEqual((std::vector<float> *)this->content,
+								(std::vector<float> *)jsonContent.content));
+	else if (this->type == jTypeVectorDouble)
+		return (!isVectorEqual((std::vector<double> *)this->content,
+								(std::vector<double> *)jsonContent.content));
+	else if (this->type == jTypeVectorJson)
+		return (!isVectorEqual((std::vector<Json> *)this->content,
+								(std::vector<Json> *)jsonContent.content));
+	else if (this->type == jTypeVectorString)
+		return (!isVectorEqual((std::vector<std::string> *)this->content,
+								(std::vector<std::string> *)jsonContent.content));
+
+	return (false);
+}
+
+
 
 std::ostream	&operator<<(std::ostream &os, JsonContent &jsonContent)
 {

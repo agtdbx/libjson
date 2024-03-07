@@ -27,6 +27,8 @@ public:
 	JsonContent	&operator[](double key);
 	JsonContent	&operator[](char const *key);
 	JsonContent	&operator[](std::string key);
+	bool		operator==(Json const &json) const;
+	bool		operator!=(Json const &json) const;
 
 	std::string	toString(bool indented);
 	std::string	toStringOneLine(void);

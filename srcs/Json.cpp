@@ -458,6 +458,48 @@ JsonContent	&Json::operator[](std::string key)
 }
 
 
+bool	Json::operator==(Json const &json) const
+{
+	if (this->data.size() != json.data.size())
+		return (false);
+
+	std::map<std::string, JsonContent>::const_iterator it = this->data.begin();
+	std::map<std::string, JsonContent>::const_iterator itCpm = json.data.begin();
+
+	while(it != this->data.end())
+	{
+		if  (it->first != itCpm->first
+			|| it->second != itCpm->second)
+			return (false);
+		it++;
+		itCpm++;
+	}
+
+	return (true);
+}
+
+bool	Json::operator!=(Json const &json) const
+{
+	if (this->data.size() != json.data.size())
+		return (true);
+
+	std::map<std::string, JsonContent>::const_iterator it = this->data.begin();
+	std::map<std::string, JsonContent>::const_iterator itCpm = json.data.begin();
+
+	while(it != this->data.end())
+	{
+		if  (it->first != itCpm->first
+			|| it->second != itCpm->second)
+			return (true);
+		it++;
+		itCpm++;
+	}
+
+	return (false);
+}
+
+
+
 std::ostream	&operator<<(std::ostream &os, Json &json)
 {
 	os << json.toStringIndented(0);
