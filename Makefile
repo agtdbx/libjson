@@ -29,13 +29,15 @@ SRCS	:=	$(SOURCE_DIR)/main.cpp \
 			$(SOURCE_DIR)/JsonContent.cpp \
 			$(SOURCE_DIR)/Json.cpp
 
-SRCS_BUILD	:=	$(SOURCE_DIR)/JsonContent.cpp \
-				$(SOURCE_DIR)/Json.cpp
-
 #====================================OBJECTS===================================#
 OBJS	:=	${SRCS:$(SOURCE_DIR)/%.cpp=$(BUILD_DIR)/%.o}
 DEPS	:=	${SRCS:$(SOURCE_DIR)/%.cpp=$(BUILD_DIR)/%.d}
 DIRS	:=	$(sort $(shell dirname $(OBJS)))
+
+#==================================BUILD UTILS=================================#
+SRCS_BUILD	:=	$(SOURCE_DIR)/JsonContent.cpp \
+				$(SOURCE_DIR)/Json.cpp
+OBJS_BUILD	:=	${SRCS_BUILD:$(SOURCE_DIR)/%.cpp=$(BUILD_DIR)/%.o}
 
 #=================================COUNTER UTILS================================#
 # COUNTER, PERCENTAGE, PROGRESS_BAR
@@ -137,6 +139,9 @@ fclean: clean
 re: fclean
 	@make
 
+test_build:
+	g++ -o test $(INCLUDE) srcs/main.cpp -Lbuild_jsonlib/libjson/lib -ljson
+
 run: $(BIN_DIR)/$(NAME)
 	@echo "$(BLUE)Launch game$(NOC)"
 	@cd $(BIN_DIR); ./$(NAME)
@@ -147,7 +152,7 @@ runval: $(BIN_DIR)/$(NAME)
 	@cd $(BIN_DIR); valgrind ./$(NAME)
 	@echo "$(GREEN)Have a nice day :)$(NOC)"
 
-build:
+build: $(OBJS_BUILD)
 	@echo "$(BLUE)Create a build for libjson$(NOC)"
 	@rm -rf build_jsonlib
 	@mkdir -p build_jsonlib/libjson
@@ -155,7 +160,7 @@ build:
 	@mkdir build_jsonlib/libjson/lib
 	@cp -r include build_jsonlib/libjson/include
 	@cp README.md build_jsonlib/libjson/README.md
-	@ar rc build_jsonlib/libjson/lib/libjson.a $(SRCS_BUILD)
+	@ar cr build_jsonlib/libjson/lib/libjson.a $(OBJS_BUILD)
 	@g++ -shared -o build_jsonlib/libjson/bin/libjson.so $(INCLUDE) \
 		-fPIC $(SRCS_BUILD)
 	@x86_64-w64-mingw32-g++ -shared -o build_jsonlib/libjson/bin/libjson.dll\
