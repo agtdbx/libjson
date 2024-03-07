@@ -23,16 +23,16 @@ The supported types are :
  - char *
  - std::string
  - Json
- - std::vector\<int\>
- - std::vector\<unsigned int\>
- - std::vector\<long\>
- - std::vector\<unsigned long\>
- - std::vector\<float\>
- - std::vector\<double\>
- - std::vector\<bool\>
- - std::vector\<char\>
- - std::vector\<std::string\>
- - std::vector\<Json\>
+ - std::vector int
+ - std::vector unsigned int
+ - std::vector long
+ - std::vector unsigned long
+ - std::vector float
+ - std::vector double
+ - std::vector bool
+ - std::vector char
+ - std::vector std::string
+ - std::vector Json
 
 Any list in Json will be a std::vector.
 
