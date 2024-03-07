@@ -765,7 +765,7 @@ bool	JsonContent::operator!=(JsonContent const &jsonContent) const
 
 
 
-std::ostream	&operator<<(std::ostream &os, JsonContent &jsonContent)
+std::ostream	&operator<<(std::ostream &os, JsonContent const &jsonContent)
 {
 	os << jsonContent.toString(true);
 	return (os);
@@ -775,7 +775,7 @@ std::ostream	&operator<<(std::ostream &os, JsonContent &jsonContent)
 ////////////////////////////////////////////////////////////////////////////////
 // Public methods
 ////////////////////////////////////////////////////////////////////////////////
-std::string	JsonContent::toString(bool indented)
+std::string	JsonContent::toString(bool indented) const
 {
 	if (indented)
 		return (this->toStringIndented(0));
@@ -783,7 +783,7 @@ std::string	JsonContent::toString(bool indented)
 }
 
 
-std::string	JsonContent::toStringOneLine(void)
+std::string	JsonContent::toStringOneLine(void) const
 {
 	if (this->type == jTypeInt)
 	{
@@ -922,7 +922,7 @@ std::string	JsonContent::toStringOneLine(void)
 }
 
 
-std::string	JsonContent::toStringIndented(int indentLevel)
+std::string	JsonContent::toStringIndented(int indentLevel) const
 {
 	if (this->type == jTypeInt)
 	{

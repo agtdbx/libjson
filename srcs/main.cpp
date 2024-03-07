@@ -10,7 +10,7 @@ int	main(void)
 	test[42.0f] = 42.0f;
 	test[69.0] = 69.0;
 
-	std::vector<int> vecInt;
+	std::vector<long> vecInt;
 	vecInt.push_back(0);
 	vecInt.push_back(1);
 	vecInt.push_back(-2);
@@ -41,7 +41,7 @@ int	main(void)
 	std::vector<Json> vecJson;
 	vecJson.push_back(Json());
 
-	std::vector<std::string> vecEmpty;
+	std::vector<long> vecEmpty;
 
 	Json	json;
 
@@ -70,17 +70,22 @@ int	main(void)
 	json["NULL0"];
 	json["NULL1"] = (void *)0;
 	json["NULL2"] = nullptr;
+	json["NULL"] = json["NULL0"];
 	json.setContent("uwu", 4);
+	json["uwuCpy"] = json.getContent("uwu");
 
 	std::string	strTest = json.toString(false);
 
 	std::cout << "JSON STR\n" << strTest << "\n" << std::endl;
 
-
 	try
 	{
 		Json jsonParse = Json::parse(strTest);
 		std::cout << "\nJSON PARSE\n" << jsonParse << std::endl;
+		std::cout << "JSON EQUALITY TEST : " << (json == jsonParse) << std::endl;
+		json.parseFromString(test.toString(false));
+		std::cout << "\nJSON PARSE TEST\n" << json << std::endl;
+		std::cout << "JSON EQUALITY TEST : " << (json == jsonParse) << std::endl;
 	}
 	catch (JsonParseError e)
 	{

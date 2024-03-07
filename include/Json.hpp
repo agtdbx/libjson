@@ -12,7 +12,7 @@ public:
 	Json(Json const &json);
 	~Json();
 
-	JsonContent	&getContent(std::string &key);
+	const JsonContent	&getContent(std::string key) const;
 
 	void	setContent(std::string key, JsonContent content);
 
@@ -30,9 +30,9 @@ public:
 	bool		operator==(Json const &json) const;
 	bool		operator!=(Json const &json) const;
 
-	std::string	toString(bool indented);
-	std::string	toStringOneLine(void);
-	std::string	toStringIndented(int indentLevel);
+	std::string	toString(bool indented) const;
+	std::string	toStringOneLine(void) const;
+	std::string	toStringIndented(int indentLevel) const;
 	void		parseFromString(std::string str);
 
 	static Json	parse(std::string str);
@@ -41,7 +41,7 @@ private:
 	std::map<std::string, JsonContent>	data;
 };
 
-std::ostream	&operator<<(std::ostream &os, Json &json);
+std::ostream	&operator<<(std::ostream &os, Json const &json);
 
 class JsonKeyError : public std::exception
 	{

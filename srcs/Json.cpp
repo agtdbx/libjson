@@ -248,24 +248,29 @@ Json::~Json( void )
 ////////////////////////////////////////////////////////////////////////////////
 // Getters
 ////////////////////////////////////////////////////////////////////////////////
-JsonContent	&Json::getContent(std::string &key)
+/// @brief Method to access of the value linked by key
+/// @param key the key, a string
+/// @return the value link at the key
+/// @exception JsonKeyError if the key doesn't exist
+const JsonContent	&Json::getContent(std::string key) const
 {
-	JsonContent	*content = NULL;
 	try
 	{
-		content = &this->data.at(key);
+		return (this->data.at(key));
 	}
 	catch (std::exception e)
 	{
 		throw JsonKeyError();
 	}
-	return (*content);
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Setters
 ////////////////////////////////////////////////////////////////////////////////
+/// @brief Method to link a value with a key
+/// @param key the key, a string
+/// @param content the value, any supported type
 void	Json::setContent(std::string key, JsonContent content)
 {
 	this->data[key] = content;
@@ -499,8 +504,7 @@ bool	Json::operator!=(Json const &json) const
 }
 
 
-
-std::ostream	&operator<<(std::ostream &os, Json &json)
+std::ostream	&operator<<(std::ostream &os, Json const &json)
 {
 	os << json.toStringIndented(0);
 	return (os);
@@ -510,7 +514,10 @@ std::ostream	&operator<<(std::ostream &os, Json &json)
 ////////////////////////////////////////////////////////////////////////////////
 // Public methods
 ////////////////////////////////////////////////////////////////////////////////
-std::string	Json::toString(bool indented)
+/// @brief Method to transform the json in string
+/// @param indented the json will be in one line if it's false
+/// @return the json in string
+std::string	Json::toString(bool indented) const
 {
 	if (indented)
 		return (this->toStringIndented(0));
@@ -518,11 +525,11 @@ std::string	Json::toString(bool indented)
 }
 
 
-std::string	Json::toStringOneLine(void)
+std::string	Json::toStringOneLine(void) const
 {
 	std::string	print = "{";
 
-	std::map<std::string, JsonContent>::iterator it = this->data.begin();
+	std::map<std::string, JsonContent>::const_iterator it = this->data.begin();
 
 	bool	start = true;
 	while (it != this->data.end())
@@ -542,7 +549,7 @@ std::string	Json::toStringOneLine(void)
 }
 
 
-std::string	Json::toStringIndented(int indentLevel)
+std::string	Json::toStringIndented(int indentLevel) const
 {
 	if (this->data.size() == 0)
 		return ("{}");
@@ -550,7 +557,7 @@ std::string	Json::toStringIndented(int indentLevel)
 	std::string	print = "{\n";
 	indentLevel++;
 
-	std::map<std::string, JsonContent>::iterator it = this->data.begin();
+	std::map<std::string, JsonContent>::const_iterator it = this->data.begin();
 
 	bool	start = true;
 	while (it != this->data.end())
@@ -576,7 +583,9 @@ std::string	Json::toStringIndented(int indentLevel)
 	return (print);
 }
 
-
+/// @brief Method to have a json from a string. Previous data will be erease
+/// @param str the string to parse
+/// @exception JsonParseError if the parsing failed
 void	Json::parseFromString(std::string str)
 {
 	std::map<std::string, JsonContent>	newData;
@@ -1016,7 +1025,10 @@ void	Json::parseFromString(std::string str)
 	throw JsonParseError("Empty string");
 }
 
-
+/// @brief Method to create a json from a string.
+/// @param str the string to parse
+/// @return the new json
+/// @exception JsonParseError if the parsing failed
 Json	Json::parse(std::string str)
 {
 	Json	json;

@@ -118,9 +118,9 @@ public:
 	bool		operator==(JsonContent const &jsonContent) const;
 	bool		operator!=(JsonContent const &jsonContent) const;
 
-	std::string	toString(bool indented);
-	std::string	toStringOneLine(void);
-	std::string	toStringIndented(int indentLevel);
+	std::string	toString(bool indented) const;
+	std::string	toStringOneLine(void) const;
+	std::string	toStringIndented(int indentLevel) const;
 
 private:
 	jsonType	type;
@@ -129,7 +129,7 @@ private:
 	void	clearContent(void);
 };
 
-std::ostream	&operator<<(std::ostream &os, JsonContent &jsonContent);
+std::ostream	&operator<<(std::ostream &os, JsonContent const &jsonContent);
 
 class JsonContentTypeError : public std::exception
 {
