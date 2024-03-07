@@ -148,12 +148,13 @@ runval: $(BIN_DIR)/$(NAME)
 	@echo "$(GREEN)Have a nice day :)$(NOC)"
 
 build:
-	@echo "$(BLUE)Create a build for linux$(NOC)"
+	@echo "$(BLUE)Create a build for libjson$(NOC)"
 	@rm -rf build_jsonlib
 	@mkdir build_jsonlib
 	@mkdir build_jsonlib/bin
 	@mkdir build_jsonlib/lib
 	@cp -r include build_jsonlib/include
+	@cp README.md build_jsonlib/README.md
 	@ar rc build_jsonlib/lib/libjson.a $(SRCS_BUILD)
 	@g++ -shared -o build_jsonlib/bin/libjson.so $(INCLUDE) -fPIC $(SRCS_BUILD)
 	@x86_64-w64-mingw32-g++ -shared -o build_jsonlib/bin/libjson.dll $(INCLUDE) $(SRCS_BUILD)
