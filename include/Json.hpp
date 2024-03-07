@@ -33,6 +33,8 @@ public:
 	std::string	toStringIndented(int indentLevel);
 	void		parseFromString(std::string str);
 
+	static Json	parse(std::string str);
+
 private:
 	std::map<std::string, JsonContent>	data;
 };

@@ -68,16 +68,14 @@ int	main(void)
 	json["vecJson"] = vecJson;
 	json["vecEmpty"] = vecEmpty;
 
-	std::string	strTest = json.toString(true);
+	std::string	strTest = json.toString(false);
 
 	std::cout << "JSON STR\n" << strTest << "\n" << std::endl;
 
 
-	Json	jsonParse;
-
 	try
 	{
-		jsonParse.parseFromString(strTest);
+		Json jsonParse = Json::parse(strTest);
 		std::cout << "\nJSON PARSE\n" << jsonParse << std::endl;
 	}
 	catch (JsonParseError e)
