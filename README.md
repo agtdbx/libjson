@@ -60,5 +60,5 @@ You can have a JsonContentTypeError if you tried to asign a not supported type t
 ## Prebuild feature
 In a build, you have 3 sub folders :
 - include, that contains the .hpp of the lib. You only need to include Json.hpp
-- lib, that contains libjson.a
-- bin, taht contains libjson.so and libjson.dll
+- lib, that contains libjson.a and libjson.dll.a
+- bin, that contains libjson.so and libjson.dll

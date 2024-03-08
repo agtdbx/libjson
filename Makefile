@@ -34,11 +34,6 @@ OBJS	:=	${SRCS:$(SOURCE_DIR)/%.cpp=$(BUILD_DIR)/%.o}
 DEPS	:=	${SRCS:$(SOURCE_DIR)/%.cpp=$(BUILD_DIR)/%.d}
 DIRS	:=	$(sort $(shell dirname $(OBJS)))
 
-#==================================BUILD UTILS=================================#
-SRCS_BUILD	:=	$(SOURCE_DIR)/JsonContent.cpp \
-				$(SOURCE_DIR)/Json.cpp
-OBJS_BUILD	:=	${SRCS_BUILD:$(SOURCE_DIR)/%.cpp=$(BUILD_DIR)/%.o}
-
 #=================================COUNTER UTILS================================#
 # COUNTER, PERCENTAGE, PROGRESS_BAR
 DISPLAY 			:= PERCENTAGE
@@ -122,6 +117,9 @@ $(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.cpp | $$(@D)
 
 endif
 
+$(BUILD_DIR)/%.lo: $(SOURCE_DIR)/%.cpp | $$(@D)
+	$(CC) $(CFLAGS) $(INCLUDE) -fPIC -o $@ -c $<
+
 $(BIN_DIR)/$(NAME): $(OBJS)
 	@rm -rf .progress_bar
 	@mkdir -p $(BIN_DIR)
@@ -152,19 +150,41 @@ runval: $(BIN_DIR)/$(NAME)
 	@cd $(BIN_DIR); valgrind ./$(NAME)
 	@echo "$(GREEN)Have a nice day :)$(NOC)"
 
-build: $(OBJS_BUILD)
+build:
 	@echo "$(BLUE)Create a build for libjson$(NOC)"
+	@echo "$(BLUE)Compiling$(NOC)"
+	@mkdir .build_lib
+	@$(CC) $(INCLUDE) -fPIC -o .build_lib/Json.lo -c srcs/Json.cpp
+	@$(CC) $(INCLUDE) -fPIC -o .build_lib/JsonContent.lo\
+		-c srcs/JsonContent.cpp
+	@x86_64-w64-mingw32-g++ $(INCLUDE) -fPIC -o .build_lib/Json_win.lo\
+		-c srcs/Json.cpp
+	@x86_64-w64-mingw32-g++ $(INCLUDE) -fPIC -o .build_lib/JsonContent_win.lo\
+		-c srcs/JsonContent.cpp
+
+	@echo "$(BLUE)Create lib folders$(NOC)"
 	@rm -rf build_jsonlib
 	@mkdir -p build_jsonlib/libjson
 	@mkdir build_jsonlib/libjson/bin
 	@mkdir build_jsonlib/libjson/lib
 	@cp -r include build_jsonlib/libjson/include
 	@cp README.md build_jsonlib/libjson/README.md
-	@ar cr build_jsonlib/libjson/lib/libjson.a $(OBJS_BUILD)
-	@g++ -shared -o build_jsonlib/libjson/bin/libjson.so $(INCLUDE) \
-		-fPIC $(SRCS_BUILD)
+
+	@echo "$(BLUE)Create lib linux$(NOC)"
+	@ar cr build_jsonlib/libjson/lib/libjson.a .build_lib/Json.lo\
+												.build_lib/JsonContent.lo
+	@ranlib build_jsonlib/libjson/lib/libjson.a
+	@g++ -shared -o build_jsonlib/libjson/bin/libjson.so $(INCLUDE)\
+		.build_lib/Json.lo .build_lib/JsonContent.lo
+
+	@echo "$(BLUE)Create lib windows$(NOC)"
+	@x86_64-w64-mingw32-ar cr build_jsonlib/libjson/lib/libjson.dll.a\
+		.build_lib/Json_win.lo .build_lib/JsonContent_win.lo
+	@x86_64-w64-mingw32-ranlib build_jsonlib/libjson/lib/libjson.dll.a
 	@x86_64-w64-mingw32-g++ -shared -o build_jsonlib/libjson/bin/libjson.dll\
-		$(INCLUDE) $(SRCS_BUILD)
+		$(INCLUDE) .build_lib/Json_win.lo .build_lib/JsonContent_win.lo
+	@rm -rf .build_lib
+
 	@echo "$(BLUE)Create compressed versions$(NOC)"
 	@tar -czvf build_jsonlib/libjson.tar.gz build_jsonlib/libjson 1>/dev/null
 	@zip -r build_jsonlib/libjson.zip build_jsonlib/libjson 1>/dev/null
