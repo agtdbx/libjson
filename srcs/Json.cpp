@@ -198,9 +198,11 @@ static std::vector<std::string>	split(std::string &str, char c)
 {
 	std::vector<std::string>	vector;
 
-	int	size = str.size();
-	int	start = 0;
-	int	len = 0;
+	int		size = str.size();
+	int		start = 0;
+	int		len = 0;
+	int		listLevel = 0;
+	int		jsonLevel = 0;
 	bool	inString = false;
 
 	while (start < size)
@@ -210,7 +212,21 @@ static std::vector<std::string>	split(std::string &str, char c)
 		{
 			if (str[start + len] == '"')
 				inString = !inString;
-			if (str[start + len] == c && !inString)
+
+			if (!inString)
+			{
+				if (str[start + len] == '[')
+					listLevel++;
+				else if (str[start + len] == ']')
+					listLevel--;
+				else if (str[start + len] == '{')
+					jsonLevel++;
+				else if (str[start + len] == '}')
+					jsonLevel--;
+			}
+
+			if (str[start + len] == c && !inString
+				&& listLevel == 0 && jsonLevel == 0)
 				break;
 			len++;
 		}
