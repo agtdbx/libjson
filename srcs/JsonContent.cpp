@@ -463,12 +463,14 @@ void	JsonContent::setContent(std::vector<std::string> const &content)
 ////////////////////////////////////////////////////////////////////////////////
 JsonContent	&JsonContent::operator=(void const *content)
 {
+	(void)content;
 	return (*this);
 }
 
 
 JsonContent	&JsonContent::operator=(std::nullptr_t const content)
 {
+	(void)content;
 	return (*this);
 }
 

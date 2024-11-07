@@ -57,6 +57,20 @@ You can have a JsonKeyError if the key doesn't exist with the getContent method.
 
 You can have a JsonContentTypeError if you tried to asign a not supported type to a JsonContent.
 
+## Build
+You can use meson to build the lib with
+```
+make
+```
+You will have the .so in the build directory
+
+To install meson, use thoses commands :
+```
+pip install meson
+pip install ninja
+```
+
+
 ## Prebuild feature
 In a build, you have 3 sub folders :
 - include, that contains the .hpp of the lib. You only need to include Json.hpp
