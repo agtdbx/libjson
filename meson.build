@@ -5,13 +5,13 @@ project('libjson', 'cpp',
 
 includes = include_directories('include')
 
-lib = library('libjson',
+lib = library('json',
 			'srcs/Json.cpp',
 			'srcs/JsonContent.cpp',
 			include_directories: includes,
 			install : true)
 
-dep_libjson = declare_dependency(link_with: lib, include_directories: includes,)
+dep_libjson = declare_dependency(link_with: lib, include_directories: includes)
 
 meson.override_dependency('libjson', dep_libjson)
 
