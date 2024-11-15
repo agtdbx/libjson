@@ -11,7 +11,7 @@ lib = library('libjson',
 			include_directories: includes,
 			install : true)
 
-dep_libjson = declare_dependency(link_with: lib)
+dep_libjson = declare_dependency(link_with: lib, include_directories: includes,)
 
 meson.override_dependency('libjson', dep_libjson)
 
