@@ -15,10 +15,11 @@ dep_libjson = declare_dependency(link_with: lib, include_directories: includes,)
 
 meson.override_dependency('libjson', dep_libjson)
 
-
+if get_option('test')
 executable('libjsonTest',
 			'srcs/main.cpp',
 			'srcs/Json.cpp',
 			'srcs/JsonContent.cpp',
 			include_directories: includes,
 			install : true)
+endif

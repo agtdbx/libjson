@@ -1,12 +1,21 @@
 all:
-	meson build && ninja -C build
+	meson build
+	ninja -C build
 
-run: all
+buildtest:
+	meson build -Dtest=true
+	ninja -C build
+
+run: buildtest
 	./build/libjsonTest
 
-clean:
-	rm -rf build
+fclean:
+	rm -rf build release
 
 re: clean all
 
-.PHONY: all clean re run
+release:
+	meson build_release --prefix=$$PWD/release
+	ninja install -C build_release
+
+.PHONY: all fclean re run
