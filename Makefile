@@ -12,7 +12,7 @@ run: buildtest
 fclean:
 	rm -rf build release
 
-re: clean all
+re: fclean all
 
 release:
 	meson build_release --prefix=$$PWD/release

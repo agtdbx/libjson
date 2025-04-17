@@ -10,15 +10,6 @@ static std::string	strPos(int lign, int col)
 }
 
 
-static bool	strContains(std::string &str, char c)
-{
-	for (std::size_t i = 0; i < str.size(); i++)
-		if (str[i] == c)
-			return (true);
-	return (false);
-}
-
-
 static bool	strContainsNotInSubstr(std::string &str, char c)
 {
 	bool	inSubstr = false;
@@ -274,7 +265,7 @@ const JsonContent	&Json::getContent(std::string key) const
 	{
 		return (this->data.at(key));
 	}
-	catch (std::exception e)
+	catch (std::exception &e)
 	{
 		throw JsonKeyError();
 	}
@@ -314,7 +305,7 @@ JsonContent	&Json::operator[](int key)
 		JsonContent	&content = this->data[realKey];
 		return (content);
 	}
-	catch (std::exception e)
+	catch (std::exception &e)
 	{
 		JsonContent content;
 
@@ -331,7 +322,7 @@ JsonContent	&Json::operator[](unsigned int key)
 		JsonContent	&content = this->data[realKey];
 		return (content);
 	}
-	catch (std::exception e)
+	catch (std::exception &e)
 	{
 		JsonContent content;
 
@@ -348,7 +339,7 @@ JsonContent	&Json::operator[](long key)
 		JsonContent	&content = this->data[realKey];
 		return (content);
 	}
-	catch (std::exception e)
+	catch (std::exception &e)
 	{
 		JsonContent content;
 
@@ -365,7 +356,7 @@ JsonContent	&Json::operator[](unsigned long key)
 		JsonContent	&content = this->data[realKey];
 		return (content);
 	}
-	catch (std::exception e)
+	catch (std::exception &e)
 	{
 		JsonContent content;
 
@@ -384,7 +375,7 @@ JsonContent	&Json::operator[](bool key)
 		JsonContent	&content = this->data[realKey];
 		return (content);
 	}
-	catch (std::exception e)
+	catch (std::exception &e)
 	{
 		JsonContent content;
 
@@ -402,7 +393,7 @@ JsonContent	&Json::operator[](char key)
 		JsonContent	&content = this->data[realKey];
 		return (content);
 	}
-	catch (std::exception e)
+	catch (std::exception &e)
 	{
 		JsonContent content;
 
@@ -419,7 +410,7 @@ JsonContent	&Json::operator[](float key)
 		JsonContent	&content = this->data[realKey];
 		return (content);
 	}
-	catch (std::exception e)
+	catch (std::exception &e)
 	{
 		JsonContent content;
 
@@ -436,7 +427,7 @@ JsonContent	&Json::operator[](double key)
 		JsonContent	&content = this->data[realKey];
 		return (content);
 	}
-	catch (std::exception e)
+	catch (std::exception &e)
 	{
 		JsonContent content;
 
@@ -453,7 +444,7 @@ JsonContent	&Json::operator[](char const *key)
 		JsonContent	&content = this->data[realKey];
 		return (content);
 	}
-	catch (std::exception e)
+	catch (std::exception &e)
 	{
 		JsonContent content;
 
@@ -469,7 +460,7 @@ JsonContent	&Json::operator[](std::string key)
 		JsonContent	&content = this->data[key];
 		return (content);
 	}
-	catch (std::exception e)
+	catch (std::exception &e)
 	{
 		JsonContent content;
 
